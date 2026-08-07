@@ -59,10 +59,8 @@ export function Navbar() {
             <Link href="/login" className="text-sm font-bold text-slate-700 hover:text-emerald-900 transition-colors">
               Log In
             </Link>
-            <Link href="/signup">
-              <button className="magnetic-glow px-6 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-sm transition-all duration-300 transform hover:scale-105 active:scale-95">
-                Get Started
-              </button>
+            <Link href="/signup" className="magnetic-glow px-6 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 inline-flex items-center justify-center">
+              Get Started
             </Link>
           </div>
         </div>

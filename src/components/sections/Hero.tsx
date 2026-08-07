@@ -21,17 +21,17 @@ export function Hero() {
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
             <Link href="/signup" className="w-full sm:w-auto">
-              <button className="magnetic-glow w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+              <div className="magnetic-glow w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)] inline-flex items-center justify-center cursor-pointer">
                 Get Started
-              </button>
+              </div>
             </Link>
             <Link href="/dashboard" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto px-8 py-4 rounded-full glass border border-black/10 hover:bg-black/5 text-slate-800 font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 group">
+              <div className="w-full sm:w-auto px-8 py-4 rounded-full glass border border-black/10 hover:bg-black/5 text-slate-800 font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer">
                 <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center group-hover:bg-black/20 transition-colors">
                   <Play className="w-4 h-4 fill-slate-800 text-slate-800" />
                 </div>
                 Go to Dashboard
-              </button>
+              </div>
             </Link>
           </div>
           
