@@ -19,7 +19,7 @@ export default function Home() {
   const [health, setHealth] = useState(0.8); // Default health for landing page (mostly healthy)
 
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden selection:bg-emerald-500/30">
+    <main className="relative min-h-screen bg-sky-100 overflow-hidden selection:bg-emerald-500/30">
       
       {loading && <Preloader onComplete={() => setLoading(false)} />}
 
@@ -37,10 +37,10 @@ export default function Home() {
         
         <Hero />
         
-        {/* Dark gradient overlay to transition from hero earth to content */}
-        <div className="w-full h-32 bg-gradient-to-b from-transparent to-black" />
+        {/* Light gradient overlay to transition from hero earth to content */}
+        <div className="w-full h-32 bg-gradient-to-b from-transparent to-sky-50" />
         
-        <div className="bg-black/80 backdrop-blur-sm">
+        <div className="bg-sky-50/90 backdrop-blur-sm">
           <WhyEcoLife />
           <HowItWorks />
           <Features />

@@ -45,7 +45,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
   }, []);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+    <div ref={containerRef} className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-sky-100">
       <div className="particle absolute w-2 h-2 bg-emerald-500 rounded-full opacity-0 scale-0 shadow-[0_0_20px_#10b981]" />
       
       <div className="preloader-canvas absolute inset-0 opacity-0">
@@ -53,8 +53,8 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       </div>
 
       <div ref={textRef} className="relative z-10 flex flex-col items-center opacity-0 mt-64">
-        <h1 className="text-6xl font-bold font-heading text-gradient tracking-tight">EcoLife</h1>
-        <p className="tagline opacity-0 translate-y-4 text-gray-400 mt-2 font-sans tracking-wide">
+        <h1 className="text-6xl font-bold font-heading text-emerald-800 tracking-tight drop-shadow-sm">EcoLife</h1>
+        <p className="tagline opacity-0 translate-y-4 text-emerald-900/70 mt-2 font-sans tracking-wide font-medium">
           Every Small Action Heals the Earth.
         </p>
       </div>

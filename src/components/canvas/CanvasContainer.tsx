@@ -23,7 +23,8 @@ export function CanvasContainer({ health, className, earthScale = 2.2 }: CanvasC
   const theme = useEarthStore(state => state.theme);
   const isEarthPage = pathname === "/dashboard/earth";
   const isHomePage = pathname === "/dashboard";
-  const isInteractive = isEarthPage || isHomePage;
+  const isLandingPage = pathname === "/";
+  const isInteractive = isEarthPage || isHomePage || isLandingPage;
 
   useEffect(() => {
     setMounted(true);
@@ -71,7 +72,7 @@ export function CanvasContainer({ health, className, earthScale = 2.2 }: CanvasC
         <Environment preset="city" background={false} />
         
         {/* The GLB Earth */}
-        <group position={isEarthPage ? [0, 0, 0] : [0, 0, 0]}>
+        <group position={isLandingPage ? [2, -0.5, 0] : isEarthPage ? [0, 0, 0] : [0, 0, 0]}>
           <Earth scale={isEarthPage ? 2.6 : earthScale} />
         </group>
        </Suspense>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Play } from "lucide-react";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -9,36 +10,40 @@ export function Hero() {
         {/* Left Side Content */}
         <div className="flex flex-col justify-center space-y-8">
           <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-bold font-heading leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold font-heading leading-tight text-emerald-950">
               Heal the Planet. <br />
-              <span className="text-gradient">One Habit at a Time.</span>
+              <span className="text-emerald-600 drop-shadow-sm">One Habit at a Time.</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-400 max-w-lg leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-700 max-w-lg leading-relaxed font-medium">
               EcoLife transforms sustainable living into an AI-powered journey where every eco-friendly action heals a living digital Earth.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-            <button className="magnetic-glow w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-              Get Started
-            </button>
-            <button className="w-full sm:w-auto px-8 py-4 rounded-full glass hover:bg-white/10 text-white font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 group">
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                <Play className="w-4 h-4 fill-white" />
-              </div>
-              Watch Demo
-            </button>
+            <Link href="/signup" className="w-full sm:w-auto">
+              <button className="magnetic-glow w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                Get Started
+              </button>
+            </Link>
+            <Link href="/dashboard" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-8 py-4 rounded-full glass border border-black/10 hover:bg-black/5 text-slate-800 font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 group">
+                <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                  <Play className="w-4 h-4 fill-slate-800 text-slate-800" />
+                </div>
+                Go to Dashboard
+              </button>
+            </Link>
           </div>
           
-          <div className="pt-8 flex items-center gap-4 opacity-60">
+          <div className="pt-8 flex items-center gap-4 opacity-80">
             <div className="flex -space-x-3">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-10 h-10 rounded-full bg-gray-800 border-2 border-black overflow-hidden">
+                <div key={i} className="w-10 h-10 rounded-full bg-slate-200 border-2 border-white overflow-hidden">
                   <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="User" />
                 </div>
               ))}
             </div>
-            <p className="text-sm">Join 10,000+ Earth Healers</p>
+            <p className="text-sm text-slate-700 font-semibold">Join 10,000+ Earth Healers</p>
           </div>
         </div>
 
