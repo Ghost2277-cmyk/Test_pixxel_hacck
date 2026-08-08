@@ -6,7 +6,6 @@ import { useEarthStore } from "@/store/useEarthStore";
 import { InventoryCard } from "@/components/inventory/InventoryCard";
 import { PackageOpen, Sparkles, Sprout, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { auth } from "@/lib/firebase";
 
 const CATEGORIES = ["All", "Seeds", "Decorations", "Pets", "Earth", "Collectibles", "Special"];
 
@@ -23,11 +22,11 @@ export default function InventoryPage() {
   const rareItems = inventory.filter(i => ['Rare', 'Epic', 'Legendary'].includes(i.rarity)).length;
 
   const handleEquip = (id: string) => {
-    equipItem(id, auth?.currentUser?.uid);
+    equipItem(id, undefined);
   };
 
   const handlePlace = (id: string) => {
-    placeOnIsland(id, auth?.currentUser?.uid);
+    placeOnIsland(id, undefined);
   };
 
   return (

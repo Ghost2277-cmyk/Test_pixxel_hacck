@@ -7,9 +7,7 @@ import { Leaf } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { getUserProfile } from "@/lib/db";
+import { useAuth } from "@/components/AuthProvider";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 
 const loginSchema = z.object({
@@ -26,37 +24,13 @@ function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
+  const { login } = useAuth();
+
   const onSubmit = async (data: LoginFormValues) => {
-    try {
-      if (!auth) {
-        // DEMO MODE BYPASS
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('demo_mode', 'true');
-        }
-        const redirectTo = searchParams.get("redirect");
-        router.push(redirectTo || "/dashboard");
-        
-        // Force reload to apply auth context
-        setTimeout(() => window.location.reload(), 100);
-        return;
-      }
-      
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      
-      // Check if user has completed onboarding
-      const profile = await getUserProfile(userCredential.user.uid);
-      
-      const redirectTo = searchParams.get("redirect");
-      
-      if (profile && profile.ecoScore > 0) {
-        router.push(redirectTo || "/dashboard");
-      } else {
-        router.push("/onboarding/intro");
-      }
-    } catch (error: any) {
-      console.error("Login error:", error);
-      setError("root", { message: error.message || "Failed to log in" });
-    }
+    // Perform dummy login
+    login(data.email, data.password);
+    const redirectTo = searchParams.get("redirect");
+    router.push(redirectTo || "/dashboard");
   };
 
   return (

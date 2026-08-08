@@ -6,9 +6,7 @@ import * as z from "zod";
 import { Leaf } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { createUserProfile } from "@/lib/db";
+import { useAuth } from "@/components/AuthProvider";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 
 const signupSchema = z.object({
@@ -27,35 +25,13 @@ export default function SignupPage() {
   const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
   });
+  
+  const { signup } = useAuth();
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      if (!auth) {
-        // DEMO MODE BYPASS
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('demo_mode', 'true');
-        }
-        router.push("/onboarding/intro");
-        
-        // Force reload to apply auth context
-        setTimeout(() => window.location.reload(), 100);
-        return;
-      }
-      
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
-      
-      await updateProfile(user, { displayName: data.name });
-      
-      // Initialize profile in Firestore
-      await createUserProfile(user.uid, {
-        uid: user.uid,
-        name: data.name,
-        email: data.email,
-        country: data.country,
-        ageGroup: data.ageGroup,
-      });
-
+      // Perform dummy signup
+      signup(data.email, data.password, data.name);
       router.push("/onboarding/intro");
     } catch (error: any) {
       console.error("Signup error:", error);
