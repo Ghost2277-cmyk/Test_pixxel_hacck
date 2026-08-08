@@ -6,7 +6,10 @@ import { useEarthStore } from "@/store/useEarthStore";
 import { useState } from "react";
 
 export function DailyLoginModal() {
-  const { hasClaimedDaily, claimDaily } = useEarthStore();
+  const { lastClaimDate, claimDaily } = useEarthStore();
+  const today = new Date().toISOString().split('T')[0];
+  const hasClaimedDaily = lastClaimDate === today;
+  
   const [isOpen, setIsOpen] = useState(!hasClaimedDaily);
   const [isOpening, setIsOpening] = useState(false);
 

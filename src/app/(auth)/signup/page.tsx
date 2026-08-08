@@ -6,6 +6,10 @@ import * as z from "zod";
 import { Leaf } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { createUserProfile } from "@/lib/db";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,15 +24,33 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupFormValues>({
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data: SignupFormValues) => {
-    // Mock signup delay
-    await new Promise((r) => setTimeout(r, 1000));
-    // Route to Eco DNA intro
-    router.push("/onboarding/intro");
+    try {
+      if (!auth) throw new Error("Firebase Auth is not initialized");
+      
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+      
+      await updateProfile(user, { displayName: data.name });
+      
+      // Initialize profile in Firestore
+      await createUserProfile(user.uid, {
+        uid: user.uid,
+        name: data.name,
+        email: data.email,
+        country: data.country,
+        ageGroup: data.ageGroup,
+      });
+
+      router.push("/onboarding/intro");
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      setError("root", { message: error.message || "Failed to create account" });
+    }
   };
 
   return (
@@ -49,15 +71,20 @@ export default function SignupPage() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {errors.root && (
+          <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-red-400 text-sm text-center">
+            {errors.root.message}
+          </div>
+        )}
         
         <div>
           <input
             {...register("name")}
             type="text"
             placeholder="Full Name"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-500"
+            className="w-full bg-[var(--card)] border border-[var(--muted-foreground)]/30 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-[var(--muted-foreground)]"
           />
-          {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -65,47 +92,45 @@ export default function SignupPage() {
             {...register("email")}
             type="email"
             placeholder="Email Address"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-500"
+            className="w-full bg-[var(--card)] border border-[var(--muted-foreground)]/30 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-[var(--muted-foreground)]"
           />
-          {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
         </div>
 
         <div>
-          <input
+          <PasswordInput
             {...register("password")}
-            type="password"
             placeholder="Password"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-gray-500"
           />
-          {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
+          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
             <select
               {...register("country")}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-emerald-500 transition-colors appearance-none"
+              className="w-full bg-[var(--card)] border border-[var(--muted-foreground)]/30 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-emerald-500 transition-colors appearance-none"
             >
-              <option value="" className="bg-slate-900">Country</option>
-              <option value="US" className="bg-slate-900">United States</option>
-              <option value="UK" className="bg-slate-900">United Kingdom</option>
-              <option value="CA" className="bg-slate-900">Canada</option>
-              <option value="IN" className="bg-slate-900">India</option>
+              <option value="" className="bg-[var(--card)]">Country</option>
+              <option value="US" className="bg-[var(--card)]">United States</option>
+              <option value="UK" className="bg-[var(--card)]">United Kingdom</option>
+              <option value="CA" className="bg-[var(--card)]">Canada</option>
+              <option value="IN" className="bg-[var(--card)]">India</option>
             </select>
-            {errors.country && <p className="text-red-400 text-xs mt-1">{errors.country.message}</p>}
+            {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country.message}</p>}
           </div>
           <div>
             <select
               {...register("ageGroup")}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-emerald-500 transition-colors appearance-none"
+              className="w-full bg-[var(--card)] border border-[var(--muted-foreground)]/30 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-emerald-500 transition-colors appearance-none"
             >
-              <option value="" className="bg-slate-900">Age</option>
-              <option value="18-24" className="bg-slate-900">18-24</option>
-              <option value="25-34" className="bg-slate-900">25-34</option>
-              <option value="35-44" className="bg-slate-900">35-44</option>
-              <option value="45+" className="bg-slate-900">45+</option>
+              <option value="" className="bg-[var(--card)]">Age</option>
+              <option value="18-24" className="bg-[var(--card)]">18-24</option>
+              <option value="25-34" className="bg-[var(--card)]">25-34</option>
+              <option value="35-44" className="bg-[var(--card)]">35-44</option>
+              <option value="45+" className="bg-[var(--card)]">45+</option>
             </select>
-            {errors.ageGroup && <p className="text-red-400 text-xs mt-1">{errors.ageGroup.message}</p>}
+            {errors.ageGroup && <p className="text-red-500 text-xs mt-1">{errors.ageGroup.message}</p>}
           </div>
         </div>
 
@@ -114,21 +139,24 @@ export default function SignupPage() {
             {...register("acceptTerms")}
             type="checkbox"
             id="terms"
-            className="w-4 h-4 rounded border-white/20 text-emerald-500 focus:ring-emerald-500 bg-white/5"
+            className="w-4 h-4 rounded border-[var(--muted-foreground)] text-emerald-500 focus:ring-emerald-500 bg-[var(--card)]"
           />
-          <label htmlFor="terms" className="text-sm text-gray-400">
-            I accept the <a href="#" className="text-emerald-400 hover:underline">Terms of Service</a>
+          <label htmlFor="terms" className="text-sm text-[var(--muted-foreground)]">
+            I accept the <a href="#" className="text-emerald-500 hover:underline">Terms of Service</a>
           </label>
         </div>
-        {errors.acceptTerms && <p className="text-red-400 text-xs mt-1">{errors.acceptTerms.message}</p>}
+        {errors.acceptTerms && <p className="text-red-500 text-xs mt-1">{errors.acceptTerms.message}</p>}
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full mt-6 magnetic-glow px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition-all duration-300 disabled:opacity-50 flex justify-center items-center"
+          className="w-full mt-6 magnetic-glow px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-all duration-300 disabled:opacity-50 flex justify-center items-center gap-2"
         >
           {isSubmitting ? (
-            <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+            <>
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              CREATING YOUR ECO PROFILE...
+            </>
           ) : (
             "Continue"
           )}
@@ -136,8 +164,8 @@ export default function SignupPage() {
 
       </form>
 
-      <div className="mt-6 text-center text-sm text-gray-400">
-        Already have an account? <a href="/login" className="text-emerald-400 hover:underline">Log in</a>
+      <div className="mt-6 text-center text-sm text-[var(--muted-foreground)]">
+        Already have an account? <a href="/login" className="text-emerald-500 hover:underline">Log in</a>
       </div>
     </motion.div>
   );

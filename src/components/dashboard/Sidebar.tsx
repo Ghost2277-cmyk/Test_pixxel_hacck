@@ -16,13 +16,15 @@ import {
   UserCircle, 
   Settings,
   Flame,
-  Leaf
+  Leaf,
+  PackageOpen
 } from "lucide-react";
 import { useEarthStore } from "@/store/useEarthStore";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Home", icon: Home },
   { href: "/dashboard/earth", label: "Earth", icon: Globe2 },
+  { href: "/dashboard/inventory", label: "Inventory", icon: PackageOpen },
   { href: "/dashboard/challenges", label: "Challenges", icon: Target },
   { href: "/dashboard/games", label: "Games", icon: Gamepad2 },
   { href: "/dashboard/recycling", label: "Recycling AI", icon: Recycle },
@@ -30,7 +32,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/leaderboard", label: "Leaderboard", icon: Trophy },
   { href: "/dashboard/tree", label: "Life Tree", icon: TreePine },
   { href: "/dashboard/achievements", label: "Achievements", icon: Award },
-  { href: "/dashboard/inventory", label: "Inventory", icon: UserCircle },
+  { href: "/dashboard/profile", label: "Profile", icon: UserCircle },
   { href: "/dashboard/report", label: "Carbon Report", icon: Leaf },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];

@@ -7,6 +7,7 @@ import { Cloud, Droplets, TreePine, Leaf, Zap, Trophy, Target, Gamepad2, Gift, H
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CanvasContainer } from "@/components/canvas/CanvasContainer"; // Ensure this is imported if we manage it here, but it's usually in layout.
+import { IslandWidget } from "@/components/dashboard/IslandWidget";
 
 export default function GameHomePage() {
   const { airQuality, oceanHealth, forestVitality, biodiversity, planetPulse, health, dailyMissions } = useEarthStore();
@@ -33,17 +34,17 @@ export default function GameHomePage() {
         
         {/* Left Side: Planet Health */}
         <div className="absolute left-6 top-10 flex flex-col gap-3 pointer-events-auto w-48">
-          <div className="bg-slate-800/80 backdrop-blur-md rounded-2xl p-3 flex items-center gap-3 border border-black/10 mb-4 shadow-xl text-slate-900">
+          <div className="bg-[var(--card)]/90 backdrop-blur-md rounded-2xl p-3 flex items-center gap-3 border border-[var(--muted-foreground)]/20 mb-4 shadow-xl text-[var(--foreground)]">
             <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-emerald-400" />
+              <Trophy className="w-5 h-5 text-emerald-500" />
             </div>
             <div>
-              <div className="text-[10px] font-bold opacity-70 uppercase tracking-wider">Planet Rank</div>
+              <div className="text-[10px] font-bold opacity-70 uppercase tracking-wider text-[var(--muted-foreground)]">Planet Rank</div>
               <div className="font-bold">#12,458</div>
             </div>
           </div>
 
-          <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-5 border border-slate-200 shadow-xl text-slate-800">
+          <div className="bg-[var(--card)]/95 backdrop-blur-xl rounded-3xl p-5 border border-[var(--muted-foreground)]/20 shadow-xl text-[var(--foreground)]">
             <h3 className="font-bold mb-4 text-center">Planet Health</h3>
             
             <div className="relative w-24 h-24 mx-auto mb-2">
@@ -78,14 +79,14 @@ export default function GameHomePage() {
         <div className="absolute right-6 top-10 w-80 flex flex-col gap-4 pointer-events-auto">
           
           {/* Gaia Chat */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-4 border border-slate-200 shadow-xl relative">
+          <div className="bg-[var(--card)]/95 backdrop-blur-xl rounded-3xl p-4 border border-[var(--muted-foreground)]/20 shadow-xl relative text-[var(--foreground)]">
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center gap-2">
                 <Leaf className="w-4 h-4 text-emerald-500" />
-                <span className="font-bold text-slate-800">Gaia</span>
+                <span className="font-bold">Gaia</span>
               </div>
             </div>
-            <div className="text-sm font-medium text-slate-600 pr-24 mb-4">
+            <div className="text-sm font-medium text-[var(--muted-foreground)] pr-24 mb-4">
               Wow! You're doing awesome! 🌱<br/>The trees are growing and the rivers are cleaner!
             </div>
             
@@ -95,28 +96,28 @@ export default function GameHomePage() {
             </div>
 
             <div className="flex gap-2 w-full justify-between mt-4">
-              <button className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-full text-xs font-bold text-slate-700 transition">
+              <button className="flex items-center gap-1 px-3 py-1.5 bg-[var(--muted)] hover:bg-[var(--muted-foreground)]/20 rounded-full text-xs font-bold text-[var(--foreground)] transition">
                 <MessageCircle className="w-3 h-3 text-emerald-500 fill-current" /> Talk
               </button>
-              <button className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-full text-xs font-bold text-slate-700 transition">
+              <button className="flex items-center gap-1 px-3 py-1.5 bg-[var(--muted)] hover:bg-[var(--muted-foreground)]/20 rounded-full text-xs font-bold text-[var(--foreground)] transition">
                 <Heart className="w-3 h-3 text-red-500 fill-current" /> Hug
               </button>
-              <button className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-full text-xs font-bold text-slate-700 transition">
+              <button className="flex items-center gap-1 px-3 py-1.5 bg-[var(--muted)] hover:bg-[var(--muted-foreground)]/20 rounded-full text-xs font-bold text-[var(--foreground)] transition">
                 <Music className="w-3 h-3 text-blue-500 fill-current" /> Dance
               </button>
-              <button className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-full text-xs font-bold text-slate-700 transition">
+              <button className="flex items-center gap-1 px-3 py-1.5 bg-[var(--muted)] hover:bg-[var(--muted-foreground)]/20 rounded-full text-xs font-bold text-[var(--foreground)] transition">
                 <Lightbulb className="w-3 h-3 text-amber-500 fill-current" /> Tips
               </button>
             </div>
           </div>
 
           {/* Today's Quests */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-5 border border-slate-200 shadow-xl">
+          <div className="bg-[var(--card)]/95 backdrop-blur-xl rounded-3xl p-5 border border-[var(--muted-foreground)]/20 shadow-xl text-[var(--foreground)]">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-slate-800 flex items-center gap-2">
+              <h3 className="font-bold flex items-center gap-2">
                 <Target className="w-5 h-5 text-emerald-500" /> Today's Quests
               </h3>
-              <span className="text-xs font-bold text-slate-500">
+              <span className="text-xs font-bold text-[var(--muted-foreground)]">
                 {dailyMissions.filter(m => m.completed).length} / {dailyMissions.length}
               </span>
             </div>
@@ -124,11 +125,11 @@ export default function GameHomePage() {
             <div className="flex flex-col gap-3 mb-4">
               {dailyMissions.slice(0, 3).map((mission) => (
                 <div key={mission.id} className="flex gap-3 items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${mission.completed ? 'bg-emerald-100' : 'bg-blue-100'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${mission.completed ? 'bg-emerald-500/20' : 'bg-blue-500/20'}`}>
                     {mission.completed ? <img src="https://api.iconify.design/lucide:check.svg?color=%2310b981" className="w-4 h-4"/> : <img src="https://api.iconify.design/lucide:bottle-water.svg?color=%233b82f6" className="w-4 h-4"/>}
                   </div>
                   <div className="flex-1">
-                    <div className={`text-sm font-bold text-slate-800 ${mission.completed ? 'opacity-50' : ''}`}>
+                    <div className={`text-sm font-bold ${mission.completed ? 'opacity-50' : ''}`}>
                       {mission.title}
                     </div>
                     <div className="text-[10px] font-bold flex gap-2">
@@ -137,9 +138,9 @@ export default function GameHomePage() {
                     </div>
                   </div>
                   {mission.completed ? (
-                    <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center"><Leaf className="w-3 h-3 text-slate-900" /></div>
+                    <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center"><Leaf className="w-3 h-3 text-white" /></div>
                   ) : (
-                    <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="w-16 h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
                       <div className="h-full bg-emerald-500 w-[60%]"></div>
                     </div>
                   )}
@@ -158,7 +159,7 @@ export default function GameHomePage() {
         {/* Center Bottom HUD */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 pointer-events-auto">
           
-          <button className="px-6 py-2 bg-white/90 backdrop-blur-md rounded-full shadow-lg font-bold text-sm text-slate-800 flex items-center gap-2 hover:scale-105 transition">
+          <button className="px-6 py-2 bg-[var(--card)]/90 backdrop-blur-md rounded-full shadow-lg font-bold text-sm text-[var(--foreground)] border border-[var(--muted-foreground)]/20 flex items-center gap-2 hover:scale-105 transition">
             Click on Earth to Explore 👆
           </button>
 
@@ -171,48 +172,48 @@ export default function GameHomePage() {
           </div>
 
           <div className="flex gap-4 mt-2">
-            <div className="bg-white/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition">
-              <div className="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center text-2xl">🎡</div>
+            <div className="bg-[var(--card)]/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition border border-[var(--muted-foreground)]/20">
+              <div className="w-10 h-10 bg-sky-500/20 rounded-full flex items-center justify-center text-2xl">🎡</div>
               <div className="flex flex-col">
-                <span className="font-bold text-sm text-slate-800 leading-none">Spin Wheel</span>
+                <span className="font-bold text-sm text-[var(--foreground)] leading-none">Spin Wheel</span>
                 <span className="text-[10px] font-bold text-sky-500">Free spin!</span>
               </div>
             </div>
             
-            <div className="bg-white/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition">
-              <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center p-1">
+            <div className="bg-[var(--card)]/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition border border-[var(--muted-foreground)]/20">
+              <div className="w-10 h-10 bg-amber-500/20 rounded-full flex items-center justify-center p-1">
                 <img src="/assets/chest.png" className="w-full h-full object-contain drop-shadow-md mix-blend-multiply" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-sm text-slate-800 leading-none">Daily Chest</span>
+                <span className="font-bold text-sm text-[var(--foreground)] leading-none">Daily Chest</span>
                 <span className="text-[10px] font-bold text-amber-500">Ready!</span>
               </div>
             </div>
             
-            <div className="bg-white/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition">
-              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center p-1 overflow-hidden">
+            <Link href="/dashboard/island" className="bg-[var(--card)]/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition border border-[var(--muted-foreground)]/20">
+              <div className="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center p-1 overflow-hidden">
                 <img src="/assets/island.png" className="w-full h-full object-cover scale-150 origin-bottom mix-blend-multiply" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-sm text-slate-800 leading-none">My Island</span>
+                <span className="font-bold text-sm text-[var(--foreground)] leading-none">My Island</span>
                 <span className="text-[10px] font-bold text-emerald-500">Level 5</span>
               </div>
-            </div>
+            </Link>
             
-            <div className="bg-white/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-2xl">🐢</div>
+            <div className="bg-[var(--card)]/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition border border-[var(--muted-foreground)]/20">
+              <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-2xl">🐢</div>
               <div className="flex flex-col">
-                <span className="font-bold text-sm text-slate-800 leading-none">Pet</span>
-                <span className="text-[10px] font-bold text-green-600">Turtle</span>
+                <span className="font-bold text-sm text-[var(--foreground)] leading-none">Pet</span>
+                <span className="text-[10px] font-bold text-green-500">Turtle</span>
               </div>
             </div>
             
-            <Link href="/dashboard/games" className="bg-white/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition">
-              <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                <Gamepad2 className="w-5 h-5 text-slate-600" />
+            <Link href="/dashboard/games" className="bg-[var(--card)]/95 backdrop-blur-md rounded-full p-2 pr-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition border border-[var(--muted-foreground)]/20">
+              <div className="w-10 h-10 bg-[var(--muted)] rounded-full flex items-center justify-center">
+                <Gamepad2 className="w-5 h-5 text-[var(--muted-foreground)]" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-sm text-slate-800 leading-none">Games</span>
+                <span className="font-bold text-sm text-[var(--foreground)] leading-none">Games</span>
                 <span className="text-[10px] font-bold text-emerald-500">8 New</span>
               </div>
             </Link>
@@ -226,52 +227,30 @@ export default function GameHomePage() {
         <div className="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
           
           {/* My Island Panel */}
-          <div className="col-span-12 md:col-span-4 bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100">
-            <h3 className="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">My Island <Leaf className="w-4 h-4 text-emerald-500"/></h3>
-            <div className="flex gap-4 mb-4">
-              <div className="w-32 h-32 rounded-2xl overflow-hidden bg-sky-50 shadow-inner relative flex-shrink-0">
-                <img src="/assets/island.png" className="w-full h-full object-cover absolute -bottom-4 hover:scale-110 transition-transform duration-500 mix-blend-multiply" />
-              </div>
-              <div className="flex-1 flex flex-col justify-center">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Island Level</div>
-                <div className="text-4xl font-black text-slate-800 mb-2">5</div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 w-[64%]"></div>
-                </div>
-                <div className="text-right text-[10px] font-bold text-slate-500 mt-1">320 / 500</div>
-              </div>
-            </div>
-            <div className="bg-slate-50 rounded-2xl p-3 mb-4">
-              <div className="text-xs font-bold text-slate-800 mb-2">Island Benefits</div>
-              <div className="flex justify-between items-center text-xs mb-1"><span className="flex items-center gap-1 text-slate-600"><Trophy className="w-3 h-3 text-yellow-500"/> More Coins</span><span className="font-bold text-emerald-500">+20%</span></div>
-              <div className="flex justify-between items-center text-xs mb-1"><span className="flex items-center gap-1 text-slate-600"><Star className="w-3 h-3 text-blue-500"/> XP Bonus</span><span className="font-bold text-emerald-500">+15%</span></div>
-              <div className="flex justify-between items-center text-xs"><span className="flex items-center gap-1 text-slate-600"><Zap className="w-3 h-3 text-amber-500"/> Energy Regen</span><span className="font-bold text-emerald-500">+10%</span></div>
-            </div>
-            <button className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-slate-900 rounded-xl font-bold text-sm shadow-lg flex justify-center items-center gap-2 transition">
-              <ArrowUp className="w-4 h-4"/> Upgrade Island
-            </button>
+          <div className="col-span-12 md:col-span-4 h-full">
+            <IslandWidget />
           </div>
 
           {/* Play & Earn Panel */}
-          <div className="col-span-12 md:col-span-4 bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 flex flex-col">
+          <div className="col-span-12 md:col-span-4 bg-[var(--card)] rounded-3xl p-5 shadow-xl border border-[var(--muted-foreground)]/20 flex flex-col text-[var(--foreground)]">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-lg text-slate-800">Play & Earn</h3>
+              <h3 className="font-bold text-lg">Play & Earn</h3>
               <Link href="/dashboard/games" className="text-xs font-bold text-emerald-500 hover:underline">View All Games</Link>
             </div>
             <div className="grid grid-cols-2 gap-3 flex-1">
               {[
-                { name: 'Waste Sorting', bg: 'bg-green-100', emoji: '♻️', lvl: 3, stars: 3 },
-                { name: 'Ocean Cleanup', bg: 'bg-blue-100', emoji: '🐢', lvl: 2, stars: 4 },
-                { name: 'Tree Planting', bg: 'bg-amber-100', emoji: '🌱', lvl: 4, stars: 5 },
-                { name: 'Energy Saver', bg: 'bg-yellow-100', emoji: '💡', lvl: 1, stars: 2 },
+                { name: 'Waste Sorting', bg: 'bg-green-500/20', emoji: '♻️', lvl: 3, stars: 3 },
+                { name: 'Ocean Cleanup', bg: 'bg-blue-500/20', emoji: '🐢', lvl: 2, stars: 4 },
+                { name: 'Tree Planting', bg: 'bg-amber-500/20', emoji: '🌱', lvl: 4, stars: 5 },
+                { name: 'Energy Saver', bg: 'bg-yellow-500/20', emoji: '💡', lvl: 1, stars: 2 },
               ].map(game => (
-                <div key={game.name} className="bg-slate-50 rounded-2xl p-2 border border-slate-100 flex flex-col items-center justify-center text-center hover:shadow-md transition cursor-pointer relative overflow-hidden group">
-                  <div className="absolute top-0 left-0 bg-red-500 text-slate-900 text-[8px] font-bold px-1.5 py-0.5 rounded-br-lg z-10">New!</div>
+                <div key={game.name} className="bg-[var(--muted)] rounded-2xl p-2 border border-[var(--muted-foreground)]/10 flex flex-col items-center justify-center text-center hover:bg-[var(--muted-foreground)]/10 transition cursor-pointer relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-br-lg z-10">New!</div>
                   <div className={`w-12 h-12 ${game.bg} rounded-xl flex items-center justify-center text-2xl mb-2 group-hover:scale-110 transition-transform`}>{game.emoji}</div>
-                  <div className="text-[10px] font-bold text-slate-800 leading-tight mb-0.5">{game.name}</div>
-                  <div className="text-[8px] text-slate-500 font-bold mb-1">Level {game.lvl}</div>
+                  <div className="text-[10px] font-bold leading-tight mb-0.5">{game.name}</div>
+                  <div className="text-[8px] text-[var(--muted-foreground)] font-bold mb-1">Level {game.lvl}</div>
                   <div className="flex gap-0.5">
-                    {[1,2,3,4,5].map(s => <Star key={s} className={`w-2 h-2 ${s <= game.stars ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200 fill-slate-200'}`} />)}
+                    {[1,2,3,4,5].map(s => <Star key={s} className={`w-2 h-2 ${s <= game.stars ? 'text-yellow-400 fill-yellow-400' : 'text-[var(--muted-foreground)] fill-[var(--muted-foreground)]'}`} />)}
                   </div>
                 </div>
               ))}
@@ -282,25 +261,25 @@ export default function GameHomePage() {
           <div className="col-span-12 md:col-span-4 flex flex-col gap-6">
             
             {/* Live Event */}
-            <div className="bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 relative overflow-hidden">
+            <div className="bg-[var(--card)] rounded-3xl p-5 shadow-xl border border-[var(--muted-foreground)]/20 relative overflow-hidden text-[var(--foreground)]">
               <div className="absolute right-0 top-0 w-32 h-full bg-emerald-500/10 -skew-x-12 translate-x-8"></div>
               <div className="flex justify-between items-center mb-2 relative z-10">
-                <h3 className="font-bold text-lg text-slate-800">Live Event</h3>
-                <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-full flex items-center gap-1"><Clock className="w-3 h-3"/> 2d 14h left</span>
+                <h3 className="font-bold text-lg">Live Event</h3>
+                <span className="text-[10px] font-bold bg-[var(--muted)] text-[var(--muted-foreground)] px-2 py-1 rounded-full flex items-center gap-1"><Clock className="w-3 h-3"/> 2d 14h left</span>
               </div>
               <div className="relative z-10">
-                <h4 className="text-xl font-black text-emerald-600 mb-1">Green Festival</h4>
-                <p className="text-xs text-slate-600 font-medium mb-4 max-w-[60%]">Plant more trees with the community!</p>
-                <button className="px-6 py-2 bg-emerald-500 text-slate-900 rounded-full font-bold text-sm hover:bg-emerald-600 transition shadow-lg">Join Now</button>
+                <h4 className="text-xl font-black text-emerald-500 mb-1">Green Festival</h4>
+                <p className="text-xs text-[var(--muted-foreground)] font-medium mb-4 max-w-[60%]">Plant more trees with the community!</p>
+                <button className="px-6 py-2 bg-emerald-500 text-white rounded-full font-bold text-sm hover:bg-emerald-600 transition shadow-lg">Join Now</button>
               </div>
-              <div className="absolute right-[-10px] bottom-[-20px] text-8xl opacity-80 pointer-events-none">🌳</div>
+              <div className="absolute right-[-10px] bottom-[-20px] text-8xl opacity-30 pointer-events-none">🌳</div>
             </div>
 
             {/* Mini Leaderboard */}
-            <div className="bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 flex-1 flex flex-col">
+            <div className="bg-[var(--card)] rounded-3xl p-5 shadow-xl border border-[var(--muted-foreground)]/20 flex-1 flex flex-col text-[var(--foreground)]">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-lg text-slate-800">Leaderboard</h3>
-                <span className="text-[10px] font-bold text-slate-500">This Week ⌄</span>
+                <h3 className="font-bold text-lg">Leaderboard</h3>
+                <span className="text-[10px] font-bold text-[var(--muted-foreground)]">This Week ⌄</span>
               </div>
               <div className="flex flex-col gap-2 flex-1">
                 {[
@@ -310,10 +289,10 @@ export default function GameHomePage() {
                   { rank: 4, name: 'EcoExplorer (You)', xp: '7,420', highlight: true },
                   { rank: 5, name: 'PlanetHero', xp: '6,010', highlight: false },
                 ].map(p => (
-                  <div key={p.rank} className={`flex items-center justify-between p-2 rounded-xl text-xs font-bold ${p.highlight ? 'bg-emerald-50 border border-emerald-100 text-emerald-800' : 'text-slate-600'}`}>
+                  <div key={p.rank} className={`flex items-center justify-between p-2 rounded-xl text-xs font-bold ${p.highlight ? 'bg-emerald-500/20 border border-emerald-500/30 text-emerald-500' : 'text-[var(--muted-foreground)]'}`}>
                     <div className="flex items-center gap-3">
-                      <span className={`w-5 text-center ${p.rank === 1 ? 'text-yellow-500' : (p.rank===2 ? 'text-slate-400' : (p.rank===3 ? 'text-amber-700' : 'text-slate-400'))}`}>{p.rank}</span>
-                      <div className="w-5 h-5 rounded-full bg-slate-200"></div>
+                      <span className={`w-5 text-center ${p.rank === 1 ? 'text-yellow-500' : (p.rank===2 ? 'text-[var(--muted-foreground)]' : (p.rank===3 ? 'text-amber-500' : 'text-[var(--muted-foreground)]'))}`}>{p.rank}</span>
+                      <div className="w-5 h-5 rounded-full bg-[var(--muted)]"></div>
                       <span>{p.name}</span>
                     </div>
                     <span>{p.xp} XP</span>
@@ -321,7 +300,7 @@ export default function GameHomePage() {
                 ))}
               </div>
               <Link href="/dashboard/leaderboard">
-                <button className="w-full mt-3 py-2 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-200 transition">View Full Leaderboard</button>
+                <button className="w-full mt-3 py-2 bg-[var(--muted)] hover:bg-[var(--muted-foreground)]/20 text-[var(--foreground)] rounded-xl font-bold text-xs transition">View Full Leaderboard</button>
               </Link>
             </div>
 

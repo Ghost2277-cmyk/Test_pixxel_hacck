@@ -8,7 +8,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden flex items-center justify-center">
+    <main className="relative min-h-screen bg-[var(--background)] overflow-hidden flex items-center justify-center">
       {/* Background canvas for slow rotating earth in background */}
       <div className="fixed inset-0 z-0 opacity-40">
         <CanvasContainer health={0.6} earthScale={1.5} />

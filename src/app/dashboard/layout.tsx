@@ -12,6 +12,7 @@ import { RewardEffects } from "@/components/dashboard/RewardEffects";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEarthStore } from "@/store/useEarthStore";
 import { usePathname } from "next/navigation";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 export default function DashboardLayout({
   children,
@@ -23,8 +24,8 @@ export default function DashboardLayout({
   const isHome = pathname === "/dashboard";
 
   return (
-    <div className="flex h-screen overflow-hidden selection:bg-emerald-500/30 transition-colors duration-1000 ease-in-out">
-      
+    <ProtectedRoute>
+      <div className="flex h-screen overflow-hidden selection:bg-emerald-500/30 transition-colors duration-1000 ease-in-out bg-[#e0f2fe] text-slate-800">
       {/* Immersive Earth Background */}
       <div className="fixed inset-0 z-0">
         <CanvasContainer earthScale={1.8} />
@@ -77,5 +78,6 @@ export default function DashboardLayout({
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Trash2, Trophy, Clock } from "lucide-react";
 import Link from "next/link";
 import { useEarthStore } from "@/store/useEarthStore";
+import { GameResultModal } from "@/components/games/GameResultModal";
 
 type BinType = 'plastic' | 'paper' | 'glass' | 'organic' | 'ewaste';
 
@@ -44,8 +45,7 @@ export default function WasteSortingGame() {
   const [gameOver, setGameOver] = useState(false);
   const [currentWaste, setCurrentWaste] = useState<WasteItem | null>(null);
   
-  const completeMission = useEarthStore(state => state.completeMission);
-  const xpStore = useEarthStore(state => state.xp); // Just to force store read
+  const { addXP } = useEarthStore();
 
   const startGame = () => {
     setScore(0);
@@ -69,14 +69,10 @@ export default function WasteSortingGame() {
       setIsPlaying(false);
       setGameOver(true);
       // Give rewards dynamically using a fake mission
-      useEarthStore.setState(state => ({
-        xp: state.xp + score,
-        greenCoins: state.greenCoins + Math.floor(score / 10),
-        rewardTrigger: Date.now(), // trigger visual effects
-      }));
+      addXP(score, Math.floor(score / 10));
       useEarthStore.getState().addNotification(`Earned ${score} XP from Waste Sorting!`);
     }
-  }, [isPlaying, timeLeft, score]);
+  }, [isPlaying, timeLeft, score, addXP]);
 
   const handleDrop = (e: React.DragEvent, binType: BinType) => {
     e.preventDefault();
@@ -93,11 +89,11 @@ export default function WasteSortingGame() {
   };
 
   return (
-    <div className="w-full h-full p-8 max-w-5xl mx-auto flex flex-col">
+    <div className="w-full h-full p-8 max-w-5xl mx-auto flex flex-col relative">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/games">
-            <button className="p-3 rounded-full glass-card hover:bg-white/10 transition">
+            <button className="p-3 rounded-full bg-[var(--card)] border border-[var(--muted-foreground)]/20 hover:bg-[var(--muted)] transition text-[var(--foreground)]">
               <ArrowLeft className="w-6 h-6" />
             </button>
           </Link>
@@ -105,7 +101,7 @@ export default function WasteSortingGame() {
             <Trash2 className="w-8 h-8 text-emerald-400" /> Waste Sorting
           </h1>
         </div>
-        <div className="flex gap-6 font-bold text-xl glass-card px-6 py-3 rounded-full">
+        <div className="flex gap-6 font-bold text-xl bg-[var(--card)] px-6 py-3 rounded-full border border-[var(--muted-foreground)]/20 shadow-sm text-[var(--foreground)]">
           <div className="flex items-center gap-2"><Trophy className="text-yellow-400" /> {score}</div>
           <div className="flex items-center gap-2 text-emerald-400">x{combo}</div>
           <div className="flex items-center gap-2"><Clock className={timeLeft <= 5 ? "text-red-500 animate-pulse" : "text-sky-400"} /> {timeLeft}s</div>
@@ -114,11 +110,11 @@ export default function WasteSortingGame() {
 
       {!isPlaying && !gameOver && (
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="glass-card p-12 rounded-3xl text-center max-w-lg">
+          <div className="bg-[var(--card)] p-12 rounded-3xl text-center max-w-lg border border-[var(--muted-foreground)]/20 shadow-xl text-[var(--foreground)]">
             <Trash2 className="w-20 h-20 text-emerald-400 mx-auto mb-6" />
             <h2 className="text-3xl font-bold mb-4">Ready to Sort?</h2>
-            <p className="opacity-70 mb-8">Drag the waste items into the correct recycling bins before time runs out! Build your combo for massive points.</p>
-            <button onClick={startGame} className="w-full py-4 rounded-xl bg-emerald-500 text-slate-900 font-bold text-lg hover:scale-105 transition-transform">
+            <p className="text-[var(--muted-foreground)] mb-8">Drag the waste items into the correct recycling bins before time runs out! Build your combo for massive points.</p>
+            <button onClick={startGame} className="w-full py-4 rounded-xl bg-emerald-500 text-white font-bold text-lg hover:scale-105 transition-transform shadow-lg">
               Start Game
             </button>
           </div>
@@ -126,17 +122,12 @@ export default function WasteSortingGame() {
       )}
 
       {gameOver && (
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-card p-12 rounded-3xl text-center max-w-lg border border-yellow-400/30">
-            <Trophy className="w-24 h-24 text-yellow-400 mx-auto mb-6" />
-            <h2 className="text-4xl font-bold mb-2">Time's Up!</h2>
-            <div className="text-2xl mb-8">You scored <span className="text-yellow-400 font-bold">{score}</span> points</div>
-            <p className="text-emerald-400 font-bold mb-8">+ {score} XP & {Math.floor(score/10)} Coins added to your account!</p>
-            <button onClick={startGame} className="w-full py-4 rounded-xl bg-emerald-500 text-slate-900 font-bold text-lg hover:scale-105 transition-transform">
-              Play Again
-            </button>
-          </motion.div>
-        </div>
+        <GameResultModal
+          score={score}
+          xpEarned={score}
+          coinsEarned={Math.floor(score / 10)}
+          onPlayAgain={startGame}
+        />
       )}
 
       {isPlaying && (

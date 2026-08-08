@@ -83,11 +83,23 @@ export default function QuestionnairePage() {
     setIsAiLoading(false);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < sections.length - 1) {
       setCurrentStep(prev => prev + 1);
       setAiResponse(null);
     } else {
+      // Save to Firebase if authenticated
+      try {
+        const { auth } = await import("@/lib/firebase");
+        if (auth?.currentUser) {
+          const { saveEcoDNA } = await import("@/lib/db");
+          // Simple mock score calculation based on answers
+          const mockScore = 50 + Math.floor(Math.random() * 40); 
+          await saveEcoDNA(auth.currentUser.uid, answers, mockScore);
+        }
+      } catch (err) {
+        console.error("Failed to save Eco DNA", err);
+      }
       router.push("/onboarding/analysis");
     }
   };

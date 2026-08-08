@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AuthProvider } from "@/components/AuthProvider";
+import { AppPreloader } from "@/components/ui/AppPreloader";
+import { RewardModal } from "@/components/ui/RewardModal";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,9 +32,14 @@ export default function RootLayout({
       className={`${inter.variable} ${outfit.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <AppPreloader>
+              {children}
+              <RewardModal />
+            </AppPreloader>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

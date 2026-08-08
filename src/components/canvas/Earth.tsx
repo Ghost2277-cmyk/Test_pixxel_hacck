@@ -4,12 +4,15 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
+import { useEarthStore } from "@/store/useEarthStore";
 
 export function Earth({ scale = 1.4 }) {
   const { scene } = useGLTF("/assets/earth_cartoon.glb");
   const earthRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const { gl } = useThree();
+
+  const { health, planetPulse, forestVitality } = useEarthStore();
 
   useEffect(() => {
     if (scene && gl) {
@@ -29,9 +32,9 @@ export function Earth({ scale = 1.4 }) {
               material.aoMapIntensity = 0.4;
             }
             
-            // Fix emissive blending if it is washed out
-            if (material.emissiveIntensity !== undefined && material.emissiveIntensity > 0) {
-              material.emissiveIntensity = 1.0; // Standardize it
+            // Dynamic emissive intensity based on health
+            if (material.emissiveIntensity !== undefined) {
+              material.emissiveIntensity = 0.5 + (health * 0.5); // 0.5 to 1.0 based on health
             }
 
             // Force the material to be completely solid and opaque to prevent the CSS background from bleeding through
@@ -62,16 +65,19 @@ export function Earth({ scale = 1.4 }) {
         }
       });
     }
-  }, [scene, gl]);
+  }, [scene, gl, health]);
 
   // Floating animation and smooth rotation
   useFrame((state, delta) => {
     if (earthRef.current) {
-      // Smooth continuous rotation
-      earthRef.current.rotation.y += delta * 0.1;
+      // Smooth continuous rotation driven by planet pulse (energy)
+      const baseRotationSpeed = 0.05;
+      const pulseMultiplier = 1 + (planetPulse * 2); // Spins up to 3x faster with max energy
+      earthRef.current.rotation.y += delta * baseRotationSpeed * pulseMultiplier;
       
-      // Gentle floating animation
-      earthRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.1;
+      // Gentle floating animation driven by forest vitality
+      const floatSpeed = 1 + forestVitality;
+      earthRef.current.position.y = Math.sin(state.clock.elapsedTime * floatSpeed) * 0.1;
       
       // Subtle scale pulse on hover
       const targetScale = hovered ? scale * 1.05 : scale;

@@ -22,6 +22,10 @@
   --glass-card: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.8));
   --glass-border: rgba(255, 255, 255, 0.08);
   --aurora-blend: screen;
+  --card: #0f172a;
+  --card-foreground: #ffffff;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
 }
 
 [data-theme="nature-light"] {
@@ -31,6 +35,10 @@
   --glass-card: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.9));
   --glass-border: rgba(255, 255, 255, 1);
   --aurora-blend: multiply;
+  --card: #ffffff;
+  --card-foreground: #064e3b;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
 }
 
 html, body {
@@ -52,6 +60,16 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
   background: #10b981;
   border-radius: 4px;
+}
+
+/* Fix autofill styles across all browsers */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--card) inset !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Glassmorphism utilities */

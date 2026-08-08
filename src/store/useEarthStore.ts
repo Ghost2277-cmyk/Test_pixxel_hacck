@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import type { InventoryItem } from '@/lib/db';
 
 interface Mission {
   id: string;
@@ -28,6 +29,10 @@ interface EarthState {
   gems: number;
   streak: number;
   petStatus: string;
+  islandLevel: number;
+  lifeTreeLevel: number;
+  lastClaimDate: string | null;
+  inventory: InventoryItem[];
   
   // Missions
   dailyMissions: Mission[];
@@ -35,24 +40,35 @@ interface EarthState {
   // Game Home & Gaia State
   theme: 'nature-light' | 'forest-night';
   energy: number;
-  hasClaimedDaily: boolean;
   currentEvent: string | null;
   gaiaEmotion: 'idle' | 'happy' | 'sleeping' | 'celebrating' | 'surprised' | 'concerned';
   gaiaMessage: string | null;
 
   // Setters
   setHealth: (health: number) => void;
+  syncProfile: (profile: any) => void;
   updateFromAnswers: (answers: Record<string, string>) => void;
-  completeMission: (id: string) => void;
+  completeMission: (id: string, uid?: string) => Promise<void>;
   addNotification: (message: string) => void;
   toggleTheme: () => void;
-  claimDaily: () => void;
+  claimDaily: (uid?: string) => Promise<boolean>;
   rewardTrigger: number; // Timestamp to trigger effects
   setGaiaState: (emotion: EarthState['gaiaEmotion'], message?: string | null) => void;
   triggerRandomEvent: (eventName: string) => void;
   
+  // Inventory Methods
+  grantItem: (item: Omit<InventoryItem, 'quantity' | 'isPlaced' | 'isEquipped'>, uid?: string) => Promise<void>;
+  equipItem: (itemId: string, uid?: string) => Promise<void>;
+  placeOnIsland: (itemId: string, uid?: string) => Promise<void>;
+  
+  rewardModalItem: InventoryItem | null;
+  clearRewardModal: () => void;
+  
   // UI State
   notifications: string[];
+
+  // Game specific
+  addXP: (xpToAdd: number, coinsToAdd: number, uid?: string) => Promise<void>;
 }
 
 const initialMissions: Mission[] = [
@@ -63,11 +79,12 @@ const initialMissions: Mission[] = [
 ];
 
 function calculateLevel(xp: number): string {
-  if (xp > 1000) return "Earth Legend";
-  if (xp > 750) return "Planet Protector";
-  if (xp > 500) return "Forest Hero";
-  if (xp > 250) return "Guardian";
-  if (xp > 100) return "Explorer";
+  if (xp > 2000) return "Earth Legend";
+  if (xp > 1300) return "Planet Protector";
+  if (xp > 850) return "Forest Hero";
+  if (xp > 500) return "Guardian";
+  if (xp > 250) return "Eco Explorer";
+  if (xp > 100) return "Sprout";
   return "Seed";
 }
 
@@ -79,16 +96,20 @@ export const useEarthStore = create<EarthState>((set, get) => ({
   airQuality: 0.1,
   biodiversity: 0.2,
   
-  xp: 45,
+  xp: 0,
   level: 'Seed',
-  greenCoins: 120,
+  greenCoins: 0,
   gems: 10,
-  streak: 6,
+  streak: 0,
   petStatus: 'Happy',
+  islandLevel: 1,
+  lifeTreeLevel: 1,
+  lastClaimDate: null,
+  inventory: [],
+  rewardModalItem: null,
   
   theme: 'nature-light',
   energy: 100,
-  hasClaimedDaily: false,
   currentEvent: null,
   gaiaEmotion: 'idle',
   gaiaMessage: "Welcome back! The forest has been waiting for you.",
@@ -99,21 +120,154 @@ export const useEarthStore = create<EarthState>((set, get) => ({
   
   setHealth: (health) => set({ health }),
   
+  syncProfile: (profile) => set({
+    xp: profile.xp || 0,
+    level: profile.level || 'Seed',
+    greenCoins: profile.coins || 0,
+    streak: profile.streak || 0,
+    lastClaimDate: profile.lastClaimDate || null,
+    islandLevel: profile.islandLevel || 1,
+    lifeTreeLevel: profile.lifeTreeLevel || 1,
+    inventory: profile.inventory || [],
+  }),
+
+  clearRewardModal: () => set({ rewardModalItem: null }),
+
   toggleTheme: () => set((state) => ({ 
     theme: state.theme === 'nature-light' ? 'forest-night' : 'nature-light' 
   })),
 
-  claimDaily: () => set((state) => {
-    if (state.hasClaimedDaily) return state;
-    get().addNotification("+50 XP and 20 Coins for Daily Login!");
+  grantItem: async (item, uid) => {
+    const state = get();
+    const existingItem = state.inventory.find(i => i.id === item.id);
+    let newInventory;
+
+    if (existingItem) {
+      newInventory = state.inventory.map(i => 
+        i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+      );
+    } else {
+      newInventory = [...state.inventory, { ...item, quantity: 1, isPlaced: false, isEquipped: false }];
+    }
+
+    if (uid) {
+      const { updateUserProgress } = await import('@/lib/db');
+      await updateUserProgress(uid, { inventory: newInventory });
+    }
+
+    set({ 
+      inventory: newInventory,
+      rewardModalItem: { ...item, quantity: existingItem ? existingItem.quantity + 1 : 1 }
+    });
+    get().addNotification(`Unlocked: ${item.name}!`);
+  },
+
+  equipItem: async (itemId, uid) => {
+    const state = get();
+    const newInventory = state.inventory.map(item => {
+      // Unequip other items in the same category if it's an exclusive category like Pet or Avatar
+      if (item.category === 'Pets') {
+        if (item.id === itemId) return { ...item, isEquipped: true };
+        return { ...item, isEquipped: false };
+      }
+      return item;
+    });
+
+    if (uid) {
+      const { updateUserProgress } = await import('@/lib/db');
+      await updateUserProgress(uid, { inventory: newInventory });
+    }
+    set({ inventory: newInventory });
+  },
+
+  placeOnIsland: async (itemId, uid) => {
+    const state = get();
+    const newInventory = state.inventory.map(item => {
+      if (item.id === itemId) return { ...item, isPlaced: !item.isPlaced };
+      return item;
+    });
+
+    if (uid) {
+      const { updateUserProgress } = await import('@/lib/db');
+      await updateUserProgress(uid, { inventory: newInventory });
+    }
+    set({ inventory: newInventory });
+  },
+
+  claimDaily: async (uid) => {
+    const state = get();
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (state.lastClaimDate === today) {
+      return false; // Already claimed today
+    }
+    
+    // Check if streak is broken (more than 1 day diff)
+    let newStreak = state.streak + 1;
+    if (state.lastClaimDate) {
+      const lastDate = new Date(state.lastClaimDate);
+      const currentDate = new Date(today);
+      const diffTime = Math.abs(currentDate.getTime() - lastDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      if (diffDays > 1) {
+        newStreak = 1; // Streak broken
+      }
+    }
+
+    const rewardCoins = 50 + (Math.min(newStreak, 7) * 25);
+    const rewardXp = 50;
+
+    const newXp = state.xp + rewardXp;
+    const newCoins = state.greenCoins + rewardCoins;
+    const newLevel = calculateLevel(newXp);
+
+    // Save to DB if uid is provided
+    if (uid) {
+      const { updateUserProgress } = await import('@/lib/db');
+      await updateUserProgress(uid, {
+        streak: newStreak,
+        coins: newCoins,
+        xp: newXp,
+        level: newLevel,
+        lastClaimDate: today
+      });
+    }
+
+    get().addNotification(`+${rewardXp} XP and ${rewardCoins} Coins for Daily Login!`);
     get().setGaiaState('happy', "Yay! You claimed your daily reward!");
-    return {
-      hasClaimedDaily: true,
-      xp: state.xp + 50,
-      greenCoins: state.greenCoins + 20,
-      level: calculateLevel(state.xp + 50)
-    };
-  }),
+    
+    set({
+      lastClaimDate: today,
+      streak: newStreak,
+      xp: newXp,
+      greenCoins: newCoins,
+      level: newLevel,
+      rewardTrigger: Date.now()
+    });
+
+    // Random Drops or Milestones
+    if (newStreak % 7 === 0) {
+      // 7-day milestone drops a rare item
+      get().grantItem({
+        id: `rare-seed-${Date.now()}`,
+        name: "Golden Oak Seed",
+        category: "Seeds",
+        rarity: "Epic",
+        description: "A rare seed awarded for a 7-day streak!",
+      }, uid);
+    } else if (Math.random() > 0.7) {
+      // 30% chance for a common drop
+      get().grantItem({
+        id: `common-water-${Date.now()}`,
+        name: "Pure Water Drop",
+        category: "Collectibles",
+        rarity: "Common",
+        description: "A drop of pure water found during your daily login.",
+      }, uid);
+    }
+    
+    return true;
+  },
 
   setGaiaState: (emotion, message = null) => {
     set({ gaiaEmotion: emotion });
@@ -148,9 +302,10 @@ export const useEarthStore = create<EarthState>((set, get) => ({
     }, 3000);
   },
   
-  completeMission: (id) => set((state) => {
+  completeMission: async (id: string, uid?: string) => {
+    const state = get();
     const mission = state.dailyMissions.find(m => m.id === id);
-    if (!mission || mission.completed) return state; // Already completed
+    if (!mission || mission.completed) return; // Already completed
     
     // Mark completed
     const updatedMissions = state.dailyMissions.map(m => 
@@ -183,14 +338,22 @@ export const useEarthStore = create<EarthState>((set, get) => ({
     // Trigger Notification & Effects
     get().addNotification(`+${mission.xpReward} XP: ${mission.title} Completed!`);
     get().setGaiaState('celebrating', "Amazing job! You're making a real difference.");
-    set({ rewardTrigger: Date.now() });
     
     if (newLevel !== state.level) {
       get().addNotification(`Level Up! You are now a ${newLevel}`);
       get().setGaiaState('celebrating', `Incredible! You reached ${newLevel}!`);
     }
+
+    if (uid) {
+      const { updateUserProgress } = await import('@/lib/db');
+      await updateUserProgress(uid, {
+        coins: newCoins,
+        xp: newXp,
+        level: newLevel
+      });
+    }
     
-    return {
+    set({
       dailyMissions: updatedMissions,
       xp: newXp,
       level: newLevel,
@@ -199,9 +362,10 @@ export const useEarthStore = create<EarthState>((set, get) => ({
       forestVitality: newForest,
       oceanHealth: newOcean,
       airQuality: newAir,
-      health: newHealth
-    };
-  }),
+      health: newHealth,
+      rewardTrigger: Date.now()
+    });
+  },
   
   updateFromAnswers: (answers) => set((state) => {
     // Basic fallback logic from Phase 2 (modified to fit 5 stats)
@@ -209,5 +373,42 @@ export const useEarthStore = create<EarthState>((set, get) => ({
     
     // Modify based on answers just to show something in onboarding...
     return { health: newHealth };
-  })
+  }),
+
+  addXP: async (xpToAdd, coinsToAdd, uid) => {
+    const state = get();
+    const newXp = state.xp + xpToAdd;
+    const newCoins = state.greenCoins + coinsToAdd;
+    const newLevel = calculateLevel(newXp);
+    
+    if (newLevel !== state.level) {
+      get().addNotification(`Level Up! You are now a ${newLevel}`);
+      get().setGaiaState('celebrating', `Incredible! You reached ${newLevel}!`);
+
+      // Grant a level-up reward
+      get().grantItem({
+        id: `level-reward-${newLevel.replace(/\s+/g, '-').toLowerCase()}`,
+        name: `${newLevel} Badge`,
+        category: "Collectibles",
+        rarity: "Epic",
+        description: `Awarded for reaching the rank of ${newLevel}.`,
+      }, uid);
+    }
+
+    if (uid) {
+      const { updateUserProgress } = await import('@/lib/db');
+      await updateUserProgress(uid, {
+        xp: newXp,
+        coins: newCoins,
+        level: newLevel
+      });
+    }
+
+    set({
+      xp: newXp,
+      greenCoins: newCoins,
+      level: newLevel,
+      rewardTrigger: Date.now()
+    });
+  }
 }));

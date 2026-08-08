@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls, SoftShadows } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { Earth } from "./Earth";
+import { EarthPlaceholder } from "./EarthPlaceholder";
 import { useEffect, useState, Suspense } from "react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
@@ -64,7 +65,7 @@ export function CanvasContainer({ health, className, earthScale = 2.2 }: CanvasC
           shadow-mapSize={[1024, 1024]}
         />
         
-       <Suspense fallback={null}>
+        <Suspense fallback={<group position={isLandingPage ? [2, -0.5, 0] : [0, 0, 0]}><EarthPlaceholder scale={isEarthPage ? 2.6 : earthScale} /></group>}>
         {/* Sky Background as requested - using a solid sky color for the cleanest background */}
         <color attach="background" args={["#bae6fd"]} />
         
