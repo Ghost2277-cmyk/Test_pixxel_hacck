@@ -78,18 +78,18 @@ export function EcoAssistant({ expression = "idle", className, size = "md" }: Ec
       case "thinking":
         return {
           animate: { y: [0, -2, 0], rotate: [0, 2, 0] },
-          transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+          transition: { duration: 2, repeat: Infinity, ease: "easeInOut" as const }
         };
       case "happy":
         return {
           animate: { y: [0, -3, 0] },
-          transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+          transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" as const }
         };
       case "idle":
       default:
         return {
           animate: { y: [0, -2, 0] },
-          transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+          transition: { duration: 3, repeat: Infinity, ease: "easeInOut" as const }
         };
     }
   };
