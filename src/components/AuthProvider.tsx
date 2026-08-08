@@ -26,6 +26,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!auth) {
+      // DEMO MODE BYPASS
+      if (typeof window !== 'undefined' && localStorage.getItem('demo_mode') === 'true') {
+        const dummyUser = { uid: 'demo-user-123', email: 'demo@ecolife.app', displayName: 'Eco Hero' } as User;
+        const dummyProfile: UserProfile = {
+          uid: 'demo-user-123',
+          email: 'demo@ecolife.app',
+          displayName: 'Eco Hero',
+          createdAt: Date.now(),
+          onboardingCompleted: true,
+          streak: 1,
+          coins: 500,
+          xp: 1000,
+          level: 'Guardian',
+          ecoScore: 100,
+          inventory: [],
+          islandLevel: 5,
+          lifeTreeLevel: 5,
+          unlockedItems: [],
+          personality: 'Eco Warrior',
+          answers: {}
+        };
+        setUser(dummyUser);
+        setUserProfile(dummyProfile);
+        
+        import('@/store/useEarthStore').then(({ useEarthStore }) => {
+          useEarthStore.getState().syncProfile(dummyProfile);
+        });
+      }
+      
       setLoading(false);
       return;
     }

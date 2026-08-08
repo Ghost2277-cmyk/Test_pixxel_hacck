@@ -28,7 +28,18 @@ function LoginForm() {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      if (!auth) throw new Error("Firebase Auth is not initialized");
+      if (!auth) {
+        // DEMO MODE BYPASS
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('demo_mode', 'true');
+        }
+        const redirectTo = searchParams.get("redirect");
+        router.push(redirectTo || "/dashboard");
+        
+        // Force reload to apply auth context
+        setTimeout(() => window.location.reload(), 100);
+        return;
+      }
       
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       

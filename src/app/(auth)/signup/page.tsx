@@ -30,7 +30,17 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      if (!auth) throw new Error("Firebase Auth is not initialized");
+      if (!auth) {
+        // DEMO MODE BYPASS
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('demo_mode', 'true');
+        }
+        router.push("/onboarding/intro");
+        
+        // Force reload to apply auth context
+        setTimeout(() => window.location.reload(), 100);
+        return;
+      }
       
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
