@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: "Sarah Jenkins",
     role: "Community Leader",
-    text: "EcoLife turned my daily guilt into action. Watching my digital Earth heal every time I recycle is incredibly motivating.",
+    text: "SYLVA-eCO LIFE turned my daily guilt into action. Watching my digital Earth heal every time I recycle is incredibly motivating.",
     img: "https://i.pravatar.cc/150?img=1"
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
   {
     name: "Elena Rodriguez",
     role: "Teacher",
-    text: "My students use EcoLife for our class project. The gamification aspect completely engaged them in sustainability.",
+    text: "My students use SYLVA-eCO LIFE for our class project. The gamification aspect completely engaged them in sustainability.",
     img: "https://i.pravatar.cc/150?img=5"
   }
 ];

@@ -11,8 +11,8 @@ const faqs = [
     answer: "Our AI analyzes the daily habits you log and compares them against global sustainability data. It then suggests small, high-impact changes tailored to your specific lifestyle and location."
   },
   {
-    question: "Is EcoLife really free?",
-    answer: "Yes, the core EcoLife experience is completely free. We believe everyone should have access to tools that help heal the planet. We offer an optional premium tier for advanced analytics."
+    question: "Is SYLVA-eCO LIFE really free?",
+    answer: "Yes, the core SYLVA-eCO LIFE experience is completely free. We believe everyone should have access to tools that help heal the planet. We offer an optional premium tier for advanced analytics."
   },
   {
     question: "How accurate is the Carbon Calculator?",
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     question: "Can I connect it to my smart home devices?",
-    answer: "Yes! EcoLife integrates with major smart home platforms to automatically log energy savings, thermostat adjustments, and smart plug usage."
+    answer: "Yes! SYLVA-eCO LIFE integrates with major smart home platforms to automatically log energy savings, thermostat adjustments, and smart plug usage."
   }
 ];
 

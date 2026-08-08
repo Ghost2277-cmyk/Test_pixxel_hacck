@@ -51,7 +51,7 @@ export default function CommunityPage() {
           <Users className="w-8 h-8 text-emerald-400" /> Community Forest
         </h1>
         <p className="text-slate-700 glass-card p-4 rounded-xl border border-black/10">
-          This forest represents thousands of EcoLife users worldwide. Every tree is a real person contributing to global sustainability.
+          This forest represents thousands of SYLVA-eCO LIFE users worldwide. Every tree is a real person contributing to global sustainability.
         </p>
       </motion.div>
 

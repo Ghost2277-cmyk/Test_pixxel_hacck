@@ -36,7 +36,7 @@ export function WhyEcoLife() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold font-heading">
-            Why <span className="text-emerald-400">EcoLife?</span>
+            Why <span className="text-emerald-400">SYLVA-eCO LIFE?</span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
             We combined behavioral science, AI, and game design to make saving the planet genuinely addictive.

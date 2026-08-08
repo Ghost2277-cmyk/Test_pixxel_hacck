@@ -25,7 +25,7 @@ export default function IntroPage() {
           transition={{ delay: 0.5, duration: 1 }}
           className="text-4xl md:text-5xl font-bold font-heading text-white"
         >
-          Welcome to <span className="text-emerald-400">EcoLife.</span>
+          Welcome to <span className="text-emerald-400">SYLVA-eCO LIFE.</span>
         </motion.h1>
         
         <motion.div 

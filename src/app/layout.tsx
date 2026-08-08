@@ -17,7 +17,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "EcoLife | Heal the Planet. One Habit at a Time.",
+  title: "SYLVA-eCO LIFE | Heal the Planet. One Habit at a Time.",
   description: "Transform sustainable living into an AI-powered journey where every eco-friendly action heals a living digital Earth.",
 };
 

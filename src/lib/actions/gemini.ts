@@ -14,7 +14,7 @@ export async function getAIEncouragement(category: string, answer: string): Prom
   }
 
   const prompt = `
-You are the AI Mentor for "EcoLife", an engaging sustainability platform.
+You are the AI Mentor for "SYLVA-eCO LIFE", an engaging sustainability platform.
 The user just answered a question about their ${category}. 
 Their answer was: "${answer}".
 

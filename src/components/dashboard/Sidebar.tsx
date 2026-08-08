@@ -49,7 +49,7 @@ export function Sidebar() {
         <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-900">
           <Leaf className="w-5 h-5 fill-current" />
         </div>
-        <span className="font-heading font-bold text-2xl tracking-tight">EcoLife</span>
+        <span className="font-heading font-bold text-2xl tracking-tight">SYLVA-eCO LIFE</span>
       </div>
 
       {/* Nav Links - Scrollable Area */}

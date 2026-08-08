@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Leaf } from "lucide-react";
 
 const messages = [
-  "Preparing your EcoLife...",
+  "Preparing your SYLVA-eCO LIFE...",
   "Growing your world...",
   "Loading your eco journey...",
 ];
@@ -143,7 +143,7 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
                 className="flex items-center gap-2 mb-8"
               >
                 <Leaf className="w-8 h-8 text-emerald-400" />
-                <span className="text-4xl font-bold font-heading text-white tracking-tight">EcoLife</span>
+                <span className="text-4xl font-bold font-heading text-white tracking-tight">SYLVA-eCO LIFE</span>
               </motion.div>
 
               {/* Progress Bar */}

@@ -50,7 +50,7 @@ export default function SignupPage() {
         <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
           <Leaf className="w-6 h-6" />
         </div>
-        <h1 className="text-2xl font-bold font-heading text-white">Join EcoLife</h1>
+        <h1 className="text-2xl font-bold font-heading text-white">Join SYLVA-eCO LIFE</h1>
         <p className="text-gray-400 text-sm mt-2 text-center">
           Start your journey to heal the planet.
         </p>

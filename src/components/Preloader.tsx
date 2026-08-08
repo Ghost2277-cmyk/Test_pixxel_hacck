@@ -53,7 +53,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       </div>
 
       <div ref={textRef} className="relative z-10 flex flex-col items-center opacity-0 mt-64">
-        <h1 className="text-6xl font-bold font-heading text-emerald-800 tracking-tight drop-shadow-sm">EcoLife</h1>
+        <h1 className="text-6xl font-bold font-heading text-emerald-800 tracking-tight drop-shadow-sm">SYLVA-eCO LIFE</h1>
         <p className="tagline opacity-0 translate-y-4 text-emerald-900/70 mt-2 font-sans tracking-wide font-medium">
           Every Small Action Heals the Earth.
         </p>

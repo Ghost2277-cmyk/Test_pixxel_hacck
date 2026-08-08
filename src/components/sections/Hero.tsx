@@ -15,7 +15,7 @@ export function Hero() {
               <span className="text-emerald-600 drop-shadow-sm">One Habit at a Time.</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-700 max-w-lg leading-relaxed font-medium">
-              EcoLife transforms sustainable living into an AI-powered journey where every eco-friendly action heals a living digital Earth.
+              SYLVA-eCO LIFE transforms sustainable living into an AI-powered journey where every eco-friendly action heals a living digital Earth.
             </p>
           </div>
 
