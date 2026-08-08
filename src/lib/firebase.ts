@@ -11,8 +11,9 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase only if we have the config (to prevent errors if not set yet)
-const app = getApps().length > 0 ? getApp() : (firebaseConfig.apiKey ? initializeApp(firebaseConfig) : null);
+// Initialize Firebase only if we have a valid config (prevent errors if not set or default)
+const isValidConfig = firebaseConfig.apiKey && firebaseConfig.apiKey.length > 10 && firebaseConfig.apiKey !== 'your_api_key_here';
+const app = getApps().length > 0 ? getApp() : (isValidConfig ? initializeApp(firebaseConfig) : null);
 const auth = app ? getAuth(app) : null;
 const db = app ? getFirestore(app) : null;
 

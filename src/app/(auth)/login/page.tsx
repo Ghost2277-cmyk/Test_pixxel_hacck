@@ -123,6 +123,21 @@ function LoginForm() {
             "Log In"
           )}
         </button>
+        
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('demo_mode', 'true');
+              const redirectTo = searchParams.get("redirect");
+              router.push(redirectTo || "/dashboard");
+              setTimeout(() => window.location.reload(), 100);
+            }
+          }}
+          className="w-full mt-2 px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold transition-all duration-300 flex justify-center items-center gap-2"
+        >
+          Use Demo Mode (No DB)
+        </button>
 
       </form>
 
