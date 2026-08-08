@@ -25,7 +25,7 @@ export function WhyEcoLife() {
       y: 0,
       transition: {
         duration: 0.7,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       },
     },
   };
