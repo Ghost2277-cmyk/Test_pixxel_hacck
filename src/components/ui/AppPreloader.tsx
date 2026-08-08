@@ -5,9 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Leaf } from "lucide-react";
 
 const messages = [
-  "Preparing your SYLVA-eCO LIFE...",
-  "Growing your world...",
-  "Loading your eco journey...",
+  "Preparing your SYLVA experience...",
+  "Growing your digital ecosystem...",
+  "Loading your sustainability journey...",
+];
+
+// Pre-defined deterministic particle configuration to prevent SSR / Client hydration mismatch
+const PARTICLE_CONFIGS = [
+  { startX: "-35vw", endX: "-15vw", duration: 3.2, delay: 0.2 },
+  { startX: "-10vw", endX: "10vw", duration: 2.8, delay: 0.8 },
+  { startX: "15vw", endX: "35vw", duration: 3.5, delay: 0.1 },
+  { startX: "-25vw", endX: "-5vw", duration: 2.5, delay: 1.2 },
+  { startX: "5vw", endX: "25vw", duration: 3.8, delay: 0.5 },
+  { startX: "30vw", endX: "45vw", duration: 2.9, delay: 1.0 },
 ];
 
 export function AppPreloader({ children }: { children: React.ReactNode }) {
@@ -26,7 +36,7 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
     // Message rotation
     const messageInterval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % messages.length);
-    }, 800); // rotate every 0.8s so it shows all three in 2.4s
+    }, 800);
 
     // Progress bar simulation (0 to 100 in 2.5 seconds)
     const totalDuration = 2500;
@@ -67,39 +77,39 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
             className="fixed inset-0 z-[9999] w-screen h-[100dvh] bg-[#020617] flex flex-col items-center justify-center overflow-hidden"
           >
             {/* Background Glow */}
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-emerald-900/40 via-transparent to-transparent opacity-80" />
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#00b87a]/20 via-transparent to-transparent opacity-80" />
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.3, 0.6, 0.3],
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vh] h-[60vh] bg-emerald-500/20 rounded-full blur-[100px] pointer-events-none"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vh] h-[60vh] bg-[#00b87a]/15 rounded-full blur-[100px] pointer-events-none"
             />
 
-            {/* Floating Particles (Leaves) */}
-            {[...Array(6)].map((_, i) => (
+            {/* Floating Deterministic Particles (Leaves) */}
+            {PARTICLE_CONFIGS.map((particle, i) => (
               <motion.div
                 key={i}
                 initial={{ 
                   y: "100vh", 
-                  x: Math.random() * 100 - 50 + "vw",
+                  x: particle.startX,
                   rotate: 0,
                   opacity: 0
                 }}
                 animate={{ 
                   y: "-20vh", 
-                  x: Math.random() * 100 - 50 + "vw",
+                  x: particle.endX,
                   rotate: 360,
                   opacity: [0, 0.5, 0]
                 }}
                 transition={{ 
-                  duration: 2 + Math.random() * 2, 
+                  duration: particle.duration, 
                   repeat: Infinity, 
-                  delay: Math.random() * 2,
+                  delay: particle.delay,
                   ease: "linear"
                 }}
-                className="absolute text-emerald-400/30"
+                className="absolute text-[#00c98a]/30"
               >
                 <Leaf className="w-8 h-8" />
               </motion.div>
@@ -114,7 +124,7 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
                 className="relative w-32 h-32 mb-8"
               >
                 {/* Earth Base */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_50px_rgba(16,185,129,0.4)] overflow-hidden">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#00b87a] to-[#063b2d] shadow-[0_0_50px_rgba(0,184,122,0.4)] overflow-hidden">
                   {/* CSS Continents */}
                   <motion.div 
                     animate={{ x: ["0%", "-50%"] }}
@@ -122,17 +132,17 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
                     className="absolute inset-0 w-[200%] flex"
                   >
                     <div className="w-1/2 h-full relative">
-                      <div className="absolute top-[20%] left-[20%] w-[40%] h-[30%] bg-emerald-400 rounded-full blur-[2px] opacity-80" />
-                      <div className="absolute bottom-[30%] right-[20%] w-[35%] h-[40%] bg-emerald-500 rounded-full blur-[2px] opacity-80" />
+                      <div className="absolute top-[20%] left-[20%] w-[40%] h-[30%] bg-[#00c98a] rounded-full blur-[2px] opacity-80" />
+                      <div className="absolute bottom-[30%] right-[20%] w-[35%] h-[40%] bg-[#c8f1e2] rounded-full blur-[2px] opacity-80" />
                     </div>
                     <div className="w-1/2 h-full relative">
-                      <div className="absolute top-[20%] left-[20%] w-[40%] h-[30%] bg-emerald-400 rounded-full blur-[2px] opacity-80" />
-                      <div className="absolute bottom-[30%] right-[20%] w-[35%] h-[40%] bg-emerald-500 rounded-full blur-[2px] opacity-80" />
+                      <div className="absolute top-[20%] left-[20%] w-[40%] h-[30%] bg-[#00c98a] rounded-full blur-[2px] opacity-80" />
+                      <div className="absolute bottom-[30%] right-[20%] w-[35%] h-[40%] bg-[#c8f1e2] rounded-full blur-[2px] opacity-80" />
                     </div>
                   </motion.div>
                 </div>
                 {/* Atmosphere */}
-                <div className="absolute inset-[-4px] rounded-full border-2 border-cyan-300/30 blur-[4px]" />
+                <div className="absolute inset-[-4px] rounded-full border-2 border-[#00c98a]/30 blur-[4px]" />
               </motion.div>
 
               {/* Logo text */}
@@ -140,16 +150,18 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="flex items-center gap-2 mb-8"
+                className="flex items-center gap-2.5 mb-8"
               >
-                <Leaf className="w-8 h-8 text-emerald-400" />
-                <span className="text-4xl font-bold font-heading text-white tracking-tight">SYLVA-eCO LIFE</span>
+                <Leaf className="w-8 h-8 text-[#00b87a]" />
+                <span className="text-4xl font-extrabold font-heading text-white tracking-tight">
+                  SYL<span className="text-[#00b87a]">VA</span>
+                </span>
               </motion.div>
 
               {/* Progress Bar */}
               <div className="w-64 h-2 bg-slate-800/50 rounded-full overflow-hidden mb-4 backdrop-blur-sm border border-slate-700/50">
                 <motion.div 
-                  className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400"
+                  className="h-full bg-[#00b87a]"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ ease: "linear", duration: 0.05 }}
@@ -165,7 +177,7 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.3 }}
-                    className="text-emerald-400/80 text-sm font-medium tracking-wide"
+                    className="text-[#00c98a] text-sm font-medium tracking-wide"
                   >
                     {messages[messageIndex]}
                   </motion.p>
@@ -176,11 +188,8 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
       
-      {/* 
-        We render children immediately behind the preloader so it can fetch data,
-        hydrate, and render its DOM. The preloader is fixed on top and z-indexed.
-      */}
       {children}
     </>
   );
 }
+

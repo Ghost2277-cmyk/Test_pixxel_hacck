@@ -2,17 +2,13 @@
 
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
-import { useEarthStore } from "@/store/useEarthStore";
 
-export function Earth({ scale = 1.4 }) {
+export function Earth({ scale = 1.4 }: { scale?: number }) {
   const { scene } = useGLTF("/assets/earth_cartoon.glb");
   const earthRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
   const { gl } = useThree();
-
-  const { health, planetPulse, forestVitality } = useEarthStore();
 
   useEffect(() => {
     if (scene && gl) {
@@ -32,19 +28,12 @@ export function Earth({ scale = 1.4 }) {
               material.aoMapIntensity = 0.4;
             }
             
-            // Dynamic emissive intensity based on health
-            if (material.emissiveIntensity !== undefined) {
-              material.emissiveIntensity = 0.5 + (health * 0.5); // 0.5 to 1.0 based on health
-            }
-
-            // Force the material to be completely solid and opaque to prevent the CSS background from bleeding through
+            // Force the material to be completely solid and opaque
             material.transparent = false;
             material.opacity = 1.0;
-            // Handle transmission if it's a PhysicalMaterial
             if ('transmission' in material) {
               (material as any).transmission = 0;
             }
-            // Ensure depth sorting is correct so inside faces don't render over front faces
             material.depthWrite = true;
             material.depthTest = true;
 
@@ -59,42 +48,27 @@ export function Earth({ scale = 1.4 }) {
               }
             });
 
-            // Ensure roughness and metalness are properly evaluated
             material.needsUpdate = true;
           }
         }
       });
     }
-  }, [scene, gl, health]);
+  }, [scene, gl]);
 
-  // Floating animation and smooth rotation
-  useFrame((state, delta) => {
+  // SINGLE slow continuous rotation in place around its own Y-axis
+  useFrame((_state, delta) => {
     if (earthRef.current) {
-      // Smooth continuous rotation driven by planet pulse (energy)
-      const baseRotationSpeed = 0.05;
-      const pulseMultiplier = 1 + (planetPulse * 2); // Spins up to 3x faster with max energy
-      earthRef.current.rotation.y += delta * baseRotationSpeed * pulseMultiplier;
-      
-      // Gentle floating animation driven by forest vitality
-      const floatSpeed = 1 + forestVitality;
-      earthRef.current.position.y = Math.sin(state.clock.elapsedTime * floatSpeed) * 0.1;
-      
-      // Subtle scale pulse on hover
-      const targetScale = hovered ? scale * 1.05 : scale;
-      earthRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      // Rotation ONLY — no position animation, no floating, no bouncing
+      earthRef.current.rotation.y += delta * 0.08;
     }
   });
 
   return (
-    <group 
-      ref={earthRef} 
-      scale={scale}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    >
+    <group ref={earthRef} scale={scale}>
       <primitive object={scene} />
     </group>
   );
 }
 
 useGLTF.preload("/assets/earth_cartoon.glb");
+

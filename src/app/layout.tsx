@@ -17,9 +17,12 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "SYLVA-eCO LIFE | Heal the Planet. One Habit at a Time.",
-  description: "Transform sustainable living into an AI-powered journey where every eco-friendly action heals a living digital Earth.",
+  title: "SYLVA | Heal the Planet. One Habit at a Time.",
+  description: "SYLVA is an AI-powered sustainability platform that helps people develop better environmental habits through AI guidance, gamification, and real-time 3D ecosystem tracking.",
 };
+
+
+
 
 export default function RootLayout({
   children,
@@ -31,7 +34,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col" style={{ backgroundColor: '#020617', color: '#ffffff' }}>
+      <body className="min-h-full flex flex-col bg-[#f3faf7] text-[#09251e]">
         <AuthProvider>
           <ThemeProvider>
             <AppPreloader>
@@ -44,3 +47,4 @@ export default function RootLayout({
     </html>
   );
 }
+
