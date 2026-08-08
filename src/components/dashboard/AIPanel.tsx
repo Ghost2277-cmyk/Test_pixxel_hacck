@@ -1,8 +1,9 @@
 "use client";
 
-import { BrainCircuit, Send, Sparkles } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EcoAssistant } from "@/components/ui/EcoAssistant";
 
 export function AIPanel() {
   const [messages, setMessages] = useState<{role: 'ai'|'user', text: string}[]>([
@@ -39,9 +40,7 @@ export function AIPanel() {
       
       {/* Header */}
       <div className="h-20 border-b border-white/5 flex items-center px-6 gap-4 flex-shrink-0">
-        <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-          <BrainCircuit className="w-5 h-5 text-emerald-400" />
-        </div>
+        <EcoAssistant size="sm" expression={isTyping ? "thinking" : "idle"} />
         <div>
           <h2 className="font-bold font-heading text-slate-900 flex items-center gap-2">
             AI Mentor <Sparkles className="w-3 h-3 text-emerald-400" />
@@ -61,9 +60,7 @@ export function AIPanel() {
               className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
             >
               {msg.role === 'ai' && (
-                <div className="w-8 h-8 flex-shrink-0 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                  <BrainCircuit className="w-4 h-4 text-emerald-400" />
-                </div>
+                <EcoAssistant size="sm" expression="happy" className="mt-1 flex-shrink-0" />
               )}
               <div 
                 className={`p-3 rounded-2xl text-sm leading-relaxed max-w-[85%] ${
@@ -78,9 +75,7 @@ export function AIPanel() {
           ))}
           {isTyping && (
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3">
-               <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                  <BrainCircuit className="w-4 h-4 text-emerald-400" />
-                </div>
+                <EcoAssistant size="sm" expression="thinking" className="mt-1 flex-shrink-0" />
                 <div className="glass-card border border-black/10 p-4 rounded-2xl rounded-tl-sm flex gap-1 items-center h-10">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "0s" }} />
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "0.2s" }} />

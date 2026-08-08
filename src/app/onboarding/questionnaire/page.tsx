@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { BrainCircuit, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { useEarthStore } from "@/store/useEarthStore";
 import { getAIEncouragement } from "@/lib/actions/gemini";
 import { cn } from "@/lib/utils";
+import { EcoAssistant } from "@/components/ui/EcoAssistant";
 
 const sections = [
   {
@@ -160,9 +161,7 @@ export default function QuestionnairePage() {
                 animate={{ opacity: 1, y: 0, height: "auto" }}
                 className="glass-card rounded-2xl p-5 border border-emerald-500/30 flex gap-4 overflow-hidden"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/50">
-                  <BrainCircuit className="w-5 h-5 text-emerald-400" />
-                </div>
+                <EcoAssistant size="sm" expression={isAiLoading ? "thinking" : "happy"} className="flex-shrink-0" />
                 <div className="flex-1">
                   <p className="text-emerald-400 font-semibold text-sm mb-1">AI Mentor</p>
                   {isAiLoading ? (

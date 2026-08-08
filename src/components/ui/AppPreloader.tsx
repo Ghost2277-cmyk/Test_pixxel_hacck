@@ -64,10 +64,10 @@ export function AppPreloader({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[9999] bg-[#020617] flex flex-col items-center justify-center overflow-hidden"
+            className="fixed inset-0 z-[9999] w-screen h-[100dvh] bg-[#020617] flex flex-col items-center justify-center overflow-hidden"
           >
             {/* Background Glow */}
-            <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/40 via-transparent to-transparent opacity-80" />
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-emerald-900/40 via-transparent to-transparent opacity-80" />
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],

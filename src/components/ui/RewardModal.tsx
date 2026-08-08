@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEarthStore } from "@/store/useEarthStore";
 import { Sparkles, Leaf, TreePine, Droplets, Gem, Settings } from "lucide-react";
+import { EcoAssistant } from "@/components/ui/EcoAssistant";
 
 const RARITY_COLORS = {
   Common: "from-slate-400 to-slate-500 shadow-slate-500/20 text-slate-100 border-slate-500",
@@ -36,6 +37,11 @@ export function RewardModal() {
           >
             {/* Background Glow */}
             <div className={`absolute inset-0 bg-gradient-to-br ${RARITY_COLORS[rewardModalItem.rarity].replace('text-', 'from-').replace('text-', 'to-')} opacity-10`} />
+            <EcoAssistant 
+              expression="celebrating" 
+              size="md"
+              className="absolute -top-6 -right-4 z-20 shadow-none border-none rotate-12" 
+            />
 
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
